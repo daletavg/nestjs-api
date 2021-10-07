@@ -14,8 +14,8 @@ export class BlogService {
     return this.blogRepository.find();
   }
 
-  find(_id:number):Promise<Blog>{
-    return this.blogRepository.findOne({where:{id:_id}});
+  find(_id: number): Promise<Blog> {
+    return this.blogRepository.findOne({ where: { id: _id } });
   }
 
   async create(blogData: CreateBlogDto): Promise<Blog> {

@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Blog } from './blog';
 
 @Entity()
 export class User {
@@ -20,6 +23,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany((type) => Blog, (blog) => blog.user)
+  blogs: Blog[];
 
   @CreateDateColumn()
   createdAt: Date;
