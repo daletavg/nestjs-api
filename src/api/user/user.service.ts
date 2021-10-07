@@ -25,12 +25,15 @@ export class UserService {
     user.email = dataUser.email;
     user.password = await bcrypt.hash(dataUser.password, salt);
     user.name = dataUser.name;
+    await this.userRepository.save(user);
     return true;
   }
 
   async validateUser(_email: string, _password: string) {
-    const user = this.userRepository.findOne({ where: { email: _email } });
-    if (user && (await bcrypt.compare(_password, (await user).password))) {
+    const user = await this.userRepository.findOne({
+      where: { email: _email },
+    });
+    if (user && (await bcrypt.compare(_password, user.password))) {
       return user;
     }
     return null;
