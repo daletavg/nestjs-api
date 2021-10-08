@@ -21,7 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class BlogController {
   constructor(private readonly blogRepository: BlogService) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   index() {
     return this.blogRepository.all();
@@ -42,8 +42,12 @@ export class BlogController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() blogData: CreateBlogDto) {
-    console.log(id);
-    return this.blogRepository.update(id, blogData);
+  @UseInterceptors(FileInterceptor('image'))
+  update(
+    @Param('id') id: number,
+    @Body() blogData: CreateBlogDto,
+    @UploadedFile() image,
+  ) {
+    return this.blogRepository.update(id, blogData, image);
   }
 }
