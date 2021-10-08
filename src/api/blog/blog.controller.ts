@@ -21,16 +21,19 @@ export class BlogController {
     return this.blogRepository.all();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   show(@Param('id') id: number) {
     return this.blogRepository.find(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   store(@Body() blogData: CreateBlogDto) {
     return this.blogRepository.create(blogData);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(@Param('id') id: number, @Body() blogData: CreateBlogDto) {
     console.log(id);
