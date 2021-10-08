@@ -18,10 +18,11 @@ export class BlogService {
     return this.blogRepository.findOne({ where: { id: _id } });
   }
 
-  async create(blogData: CreateBlogDto): Promise<Blog> {
+  async create(blogData: CreateBlogDto, image: any): Promise<Blog> {
     const blog = new Blog();
     blog.title = blogData.title;
     blog.text = blogData.text;
+    blog.image = image.path;
     return await this.blogRepository.save(blog);
   }
 

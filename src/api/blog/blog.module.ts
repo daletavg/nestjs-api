@@ -4,12 +4,17 @@ import { BlogController } from './blog.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Blog } from '../../database/entities/blog';
 import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { editFileName } from '../../config/edit-file-name';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Blog]),
     MulterModule.register({
-      dest: './upload',
+      storage: diskStorage({
+        destination: './storage/blog',
+        filename: editFileName,
+      }),
     }),
   ],
   providers: [BlogService],

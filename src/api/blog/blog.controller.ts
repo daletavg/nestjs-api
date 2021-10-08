@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -34,10 +35,11 @@ export class BlogController {
     return this.blogRepository.find(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post()
-  store(@Body() blogData: CreateBlogDto) {
-    return this.blogRepository.create(blogData);
+  @UseInterceptors(FileInterceptor('image'))
+  store(@Body() blogData: CreateBlogDto, @UploadedFile() image) {
+    return this.blogRepository.create(blogData, image);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -45,30 +47,5 @@ export class BlogController {
   update(@Param('id') id: number, @Body() blogData: CreateBlogDto) {
     console.log(id);
     return this.blogRepository.update(id, blogData);
-  }
-
-  @Post('upload')
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './files',
-        filename: (req, file, callback) => {
-          const name = file.originalname.split('.')[0];
-          const fileExtName = extname(file.originalname);
-          const randomName = Array(4)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          callback(null, `${name}-${randomName}${fileExtName}`);
-        },
-      }),
-    }),
-  )
-  uploadFile(@UploadedFile() image) {
-    const response = {
-      originalname: image.originalname,
-      filename: image.filename,
-    };
-    return response;
   }
 }
