@@ -1,21 +1,24 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 @Controller('blog')
+@UseInterceptors(ClassSerializerInterceptor)
 export class BlogController {
   constructor(private readonly blogRepository: BlogService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   index() {
     return this.blogRepository.all();

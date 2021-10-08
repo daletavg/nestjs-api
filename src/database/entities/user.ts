@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Blog } from './blog';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -21,6 +22,7 @@ export class User {
   @Column({ unique: true, length: 190 })
   email: string;
 
+  @Exclude()
   @Column()
   password: string;
 
@@ -33,6 +35,7 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Exclude()
   @DeleteDateColumn()
   deletedAt: Date;
 }
