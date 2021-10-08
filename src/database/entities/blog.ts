@@ -13,6 +13,9 @@ export class Blog {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  image: string;
+
   @Column({ length: 190 })
   title: string;
 
