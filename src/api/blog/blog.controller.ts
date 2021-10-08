@@ -6,19 +6,22 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('blog')
 @UseInterceptors(ClassSerializerInterceptor)
 export class BlogController {
   constructor(private readonly blogRepository: BlogService) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   index() {
     return this.blogRepository.all();
@@ -30,16 +33,21 @@ export class BlogController {
     return this.blogRepository.find(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post()
-  store(@Body() blogData: CreateBlogDto) {
-    return this.blogRepository.create(blogData);
+  @UseInterceptors(FileInterceptor('image'))
+  store(@Body() blogData: CreateBlogDto, @UploadedFile() image) {
+    return this.blogRepository.create(blogData, image);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() blogData: CreateBlogDto) {
-    console.log(id);
-    return this.blogRepository.update(id, blogData);
+  @UseInterceptors(FileInterceptor('image'))
+  update(
+    @Param('id') id: number,
+    @Body() blogData: CreateBlogDto,
+    @UploadedFile() image,
+  ) {
+    return this.blogRepository.update(id, blogData, image);
   }
 }
