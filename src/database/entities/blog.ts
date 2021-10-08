@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user';
+import { Category } from './category';
 
 @Entity()
 export class Blog {
@@ -26,6 +29,10 @@ export class Blog {
     eager: true,
   })
   user: User;
+
+  @ManyToMany(() => Category)
+  @JoinTable()
+  blogs: Category[];
 
   @CreateDateColumn()
   createdAt: Date;

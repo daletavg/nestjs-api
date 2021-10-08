@@ -7,7 +7,8 @@ import { UserModule } from './api/user/user.module';
 import { AuthModule } from './api/auth/auth.module';
 import { User } from './database/entities/user';
 import { AppController } from './app.controller';
-
+import { CategoryModule } from './api/category/category.module';
+import { Category } from './database/entities/category';
 
 @Module({
   imports: [
@@ -18,12 +19,13 @@ import { AppController } from './app.controller';
       username: 'root',
       password: 'meta',
       database: 'nest_blog',
-      entities: [Blog, User],
+      entities: [Blog, User, Category],
       synchronize: true,
     }),
     BlogModule,
     UserModule,
     AuthModule,
+    CategoryModule,
   ],
   controllers: [AppController],
 })
