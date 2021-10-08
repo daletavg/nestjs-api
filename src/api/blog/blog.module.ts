@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Blog } from '../../database/entities/blog';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName } from '../../config/edit-file-name';
+import { editFileName } from '../../helpers/edit-file-name';
 
 @Module({
   imports: [
