@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../../database/entities/category';
-import { Repository } from 'typeorm';
+import { getManager, Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 @Injectable()
@@ -12,6 +12,13 @@ export class CategoryService {
   ) {}
   all(): Promise<Category[]> {
     return this.categoryRepository.find();
+  }
+
+  findMany(_ids: Array<number>): Promise<Category[]> {
+    return getManager()
+      .createQueryBuilder(Category, 'category')
+      .where('category.id IN (:ids)', { ids: _ids })
+      .getMany();
   }
 
   find(_id: number): Promise<Category> {

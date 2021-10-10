@@ -6,6 +6,7 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { deleteFile, checkExist } from '../../helpers/delete-file';
 import { UserService } from '../user/user.service';
 import { User } from '../../database/entities/user';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class BlogService {
@@ -13,6 +14,7 @@ export class BlogService {
     @InjectRepository(Blog)
     private blogRepository: Repository<Blog>,
     private userRepository: UserService,
+    private categoryRepository: CategoryService,
   ) {}
   all(): Promise<Blog[]> {
     return this.blogRepository.find({
@@ -36,6 +38,15 @@ export class BlogService {
       blog.image = image.path;
     }
     const user = await this.userRepository.find(userData.sub);
+    const categories = await this.categoryRepository.findMany(
+      blogData.categoryIds,
+    );
+    if (categories.length) {
+      blog.categories = categories;
+      // for (const key in categories) {
+      //   blog.categories.push(categories[key]);
+      // }
+    }
     if (user) {
       blog.user = user;
     }

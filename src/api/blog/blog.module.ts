@@ -9,10 +9,12 @@ import { editFileName } from '../../helpers/edit-file-name';
 import { UserModule } from '../user/user.module';
 import { User } from '../../database/entities/user';
 import { UserService } from '../user/user.service';
+import { Category } from '../../database/entities/category';
+import { CategoryService } from '../category/category.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Blog, User]),
+    TypeOrmModule.forFeature([Blog, User, Category]),
     MulterModule.register({
       storage: diskStorage({
         destination: './storage/blog',
@@ -20,7 +22,7 @@ import { UserService } from '../user/user.service';
       }),
     }),
   ],
-  providers: [BlogService, UserService],
+  providers: [BlogService, UserService, CategoryService],
   controllers: [BlogController],
 })
 export class BlogModule {}
