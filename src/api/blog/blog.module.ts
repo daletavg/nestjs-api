@@ -6,10 +6,13 @@ import { Blog } from '../../database/entities/blog';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName } from '../../helpers/edit-file-name';
+import { UserModule } from '../user/user.module';
+import { User } from '../../database/entities/user';
+import { UserService } from '../user/user.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Blog]),
+    TypeOrmModule.forFeature([Blog, User]),
     MulterModule.register({
       storage: diskStorage({
         destination: './storage/blog',
@@ -17,7 +20,7 @@ import { editFileName } from '../../helpers/edit-file-name';
       }),
     }),
   ],
-  providers: [BlogService],
+  providers: [BlogService, UserService],
   controllers: [BlogController],
 })
 export class BlogModule {}

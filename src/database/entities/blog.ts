@@ -25,14 +25,13 @@ export class Blog {
   @Column()
   text: string;
 
-  @ManyToOne((type) => User, (user) => user.blogs, {
-    eager: true,
-  })
+  @ManyToOne((type) => User, (user) => user.blogs)
+  @JoinTable()
   user: User;
 
   @ManyToMany(() => Category)
   @JoinTable()
-  blogs: Category[];
+  categories: Category[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -33,11 +33,15 @@ export class BlogController {
     return this.blogRepository.find(id);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  store(@Body() blogData: CreateBlogDto, @UploadedFile() image) {
-    return this.blogRepository.create(blogData, image);
+  store(
+    @Body() blogData: CreateBlogDto,
+    @UploadedFile() image,
+    @Req() request,
+  ) {
+    return this.blogRepository.create(blogData, image, request.user);
   }
 
   @UseGuards(JwtAuthGuard)
