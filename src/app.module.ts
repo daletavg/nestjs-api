@@ -15,10 +15,10 @@ import { Category } from './database/entities/category';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
+      port: 3307,
       username: 'root',
-      password: 'meta',
-      database: 'nest_blog',
+      password: 'root',
+      database: 'dashboard',
       entities: [Blog, User, Category],
       synchronize: true,
     }),
