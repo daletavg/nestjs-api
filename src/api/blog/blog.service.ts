@@ -67,6 +67,12 @@ export class BlogService {
       }
       blog.image = image.path;
     }
+    const categories = await this.categoryRepository.findMany(
+      blogData.categoryIds,
+    );
+    if (categories.length) {
+      blog.categories = categories;
+    }
     return this.blogRepository.save(blog);
   }
 }
