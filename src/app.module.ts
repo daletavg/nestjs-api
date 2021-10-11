@@ -7,23 +7,25 @@ import { UserModule } from './api/user/user.module';
 import { AuthModule } from './api/auth/auth.module';
 import { User } from './database/entities/user';
 import { AppController } from './app.controller';
-
+import { CategoryModule } from './api/category/category.module';
+import { Category } from './database/entities/category';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
+      port: 3307,
       username: 'root',
-      password: 'meta',
-      database: 'nest_blog',
-      entities: [Blog, User],
+      password: 'root',
+      database: 'dashboard',
+      entities: [Blog, User, Category],
       synchronize: true,
     }),
     BlogModule,
     UserModule,
     AuthModule,
+    CategoryModule,
   ],
   controllers: [AppController],
 })
